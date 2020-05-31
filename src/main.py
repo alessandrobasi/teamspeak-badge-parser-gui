@@ -7,8 +7,8 @@ from PyQt5.QtWidgets import QTableWidgetItem
 from PyQt5.QtGui import QIcon, QPixmap
 import requests
 import os
-import time
-import shutil
+from time import time
+from shutil import rmtree
 from PyQt5.QtCore import Qt
 
 
@@ -29,7 +29,7 @@ class MainWindow(QMainWindow):
             self.__nextFunct()
     
     def getFile(self, local=None):
-        if local and ( not os.path.exists(local) or (time.time() - os.path.getmtime(local)) > 604800):
+        if local and ( not os.path.exists(local) or (time() - os.path.getmtime(local)) > 604800):
             r = requests.get("https://badges-content.teamspeak.com/list")
             if r.status_code == 200:
                 with open("list", "wb") as f:
@@ -74,7 +74,7 @@ class MainWindow(QMainWindow):
 
     def clearCache(self):
         os.remove("list")
-        shutil.rmtree("cache", ignore_errors=True)
+        rmtree("cache", ignore_errors=True)
         os.mkdir("cache")
         app.quit()
 
