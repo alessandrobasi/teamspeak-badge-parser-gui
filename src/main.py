@@ -29,6 +29,9 @@ class MainWindow(QMainWindow):
             self.__nextFunct()
     
     def getFile(self, local=None):
+        if not os.path.exists("cache"):
+            os.mkdir("cache")
+        
         if local and ( not os.path.exists(local) or (time() - os.path.getmtime(local)) > 604800):
             r = requests.get("https://badges-content.teamspeak.com/list")
             if r.status_code == 200:
